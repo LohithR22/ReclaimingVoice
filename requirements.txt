@@ -1,0 +1,8 @@
+# Core dependencies
+groq>=0.3
+chromadb>=0.4.22
+llama-index-core>=0.10.0
+llama-index-vector-stores-chroma==0.4.1
+llama-index-embeddings-huggingface==0.5.3
+PyPDF2>=3.0.0
+python-dotenv>=1.0.0

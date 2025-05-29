@@ -1,0 +1,192 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from '../../services/api';
+import Logo from "../Logo";
+
+export default function GiveFeedback() {
+    const [feedback, setFeedback] = useState('');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            const patientUsername = localStorage.getItem('patient');
+            if (!patientUsername) {
+                alert('Please log in first');
+                navigate('/');
+                return;
+            }
+
+            const response = await axios.post('/api/feedback', {
+                patientUsername,
+                feedback,
+                date: new Date().toISOString().split('T')[0]
+            });
+
+            if (response.data.success) {
+                alert('Feedback submitted successfully!');
+                navigate('/patient/dashboard');
+            }
+        } catch (error) {
+            alert('Failed to submit feedback: ' + error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div style={{
+            minHeight: "100vh",
+            width: "100vw",
+            margin: 0,
+            padding: 0,
+            background: "linear-gradient(135deg, #f0f4ff 0%, #e6eeff 50%, #f0f4ff 100%)",
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            overflow: "auto"
+        }}>
+            <Logo position="bottom-right" />
+            {/* Navigation Bar */}
+            <nav style={{
+                padding: "0.75rem 1.5rem",
+                background: "white",
+                boxShadow: "0 1px 2px rgba(0,0,0,0.1)",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "1rem"
+            }}>
+                <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "2rem"
+                }}>
+                    <h1 style={{
+                        fontSize: "20px",
+                        color: "#1e40af",
+                        margin: 0,
+                        fontWeight: "700"
+                    }}>Patient Dashboard</h1>
+                    <div style={{
+                        display: "flex",
+                        gap: "1rem"
+                    }}>
+                        <span style={{
+                            color: "#4b5563",
+                            fontSize: "14px",
+                            fontWeight: "500",
+                            padding: "0.4rem 0.75rem"
+                        }}>Give Feedback</span>
+                    </div>
+                </div>
+                <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1rem"
+                }}>
+                    <button
+                        onClick={() => navigate("/patient/dashboard")}
+                        style={{
+                            color: "#64748b",
+                            textDecoration: "none",
+                            fontWeight: "500",
+                            fontSize: "14px",
+                            padding: "0.4rem 0.75rem",
+                            borderRadius: "6px",
+                            border: "1px solid #e2e8f0",
+                            background: "transparent",
+                            cursor: "pointer",
+                            transition: "all 0.2s ease",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.5rem"
+                        }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                        Back to Dashboard
+                    </button>
+                </div>
+            </nav>
+
+            {/* Main Content */}
+            <div style={{
+                maxWidth: "600px",
+                margin: "2rem auto",
+                padding: "0 1.5rem"
+            }}>
+                <div style={{
+                    background: "white",
+                    padding: "2rem",
+                    borderRadius: "8px",
+                    boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+                }}>
+                    <h2 style={{
+                        fontSize: "18px",
+                        color: "#1e40af",
+                        marginTop: 0,
+                        marginBottom: "1.5rem",
+                        textAlign: "center"
+                    }}>Share Your Feedback</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div style={{ marginBottom: "1.5rem" }}>
+                            <label
+                                style={{
+                                    display: "block",
+                                    marginBottom: "0.5rem",
+                                    color: "#1e293b",
+                                    fontSize: "14px",
+                                    fontWeight: "500"
+                                }}
+                            >
+                                Your Feedback
+                            </label>
+                            <textarea
+                                required
+                                value={feedback}
+                                onChange={(e) => setFeedback(e.target.value)}
+                                placeholder="Please share your experience and suggestions..."
+                                style={{
+                                    width: "100%",
+                                    padding: "0.75rem",
+                                    border: "1px solid #e2e8f0",
+                                    borderRadius: "6px",
+                                    fontSize: "14px",
+                                    minHeight: "150px",
+                                    resize: "vertical"
+                                }}
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            style={{
+                                width: "100%",
+                                padding: "0.75rem",
+                                background: "#1e40af",
+                                color: "white",
+                                border: "none",
+                                borderRadius: "6px",
+                                fontSize: "14px",
+                                fontWeight: "500",
+                                cursor: loading ? "not-allowed" : "pointer",
+                                transition: "background-color 0.2s ease",
+                                opacity: loading ? "0.7" : "1"
+                            }}
+                        >
+                            {loading ? "Submitting Feedback..." : "Submit Feedback"}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+} 
