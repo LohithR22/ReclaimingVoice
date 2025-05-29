@@ -1,35 +1,42 @@
-# 🗣️ ReclaimingVoice: AI-Powered Speech Therapy Platform  
+# 🗣️ ReclaimingVoice: AI-Powered Speech Therapy Platform
+
 **🏆 Winning Project of Colossus 2.0 Hackathon at Dr.AIT**  
-*Bridging speech therapy gaps through Multi-Agent RAG architecture*
+_Bridging speech therapy gaps through Multi-Agent RAG architecture_
 
 ---
 
 ## 🚀 Overview
+
 **ReclaimingVoice** revolutionizes speech therapy accessibility using **Retrieval-Augmented Generation (RAG)** and **Multi-Agent LLM architecture** to deliver personalized treatment plans.
 
 Designed for patients with articulation disorders, fluency challenges, and motor speech impairments, our system combines clinical expertise with AI precision while enabling remote care through certified Speech-Language Pathologists (SLPs).
 
-![Workflow Diagram](docs/assets/workflow_diagram.png)  
-*Architecture diagram showing multi-agent RAG workflow from the project presentation*
+![Workflow Diagram](flow_diagram.png)  
+_Architecture diagram showing multi-agent RAG workflow from the project presentation_
 
 ---
 
 ## 🔍 Problem Statement
-- 📉 **70% rural accessibility gap** for speech therapy services  
-- 🧍 **58% patients** report isolation due to impersonal therapy plans  
-- 🕒 **Manual assessments** lack real-time adaptation to patient progress  
+
+- 📉 **70% rural accessibility gap** for speech therapy services
+- 🧍 **58% patients** report isolation due to impersonal therapy plans
+- 🕒 **Manual assessments** lack real-time adaptation to patient progress
 
 ---
 
 ## 💡 Our Solution: Why RAG + Multi-Agent?
 
 ### 🔎 Retrieval-Augmented Generation (RAG)
+
 - **Context-Aware Therapy Plans**  
   Integrates ChromaDB vector store with 150+ peer-reviewed speech therapy documents using Sentence Transformers (`all-MiniLM-L6-v2`):
+
   ```python
   # From exercise_generator.py
   self.vector_store = ChromaVectorStore(chroma_collection=chromadb_client.get_collection(collection_name))
   self.index = VectorStoreIndex.from_vector_store(self.vector_store, embed_model=self.embed_model)
+
+  ```
 
 - **Factual Accuracy**
   Reduces hallucination risks by grounding responses in medical literature.
