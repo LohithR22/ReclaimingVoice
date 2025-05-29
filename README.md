@@ -153,7 +153,3 @@ CHROMA_DB_PATH="./chroma_db"
 - OpenAI & Google Gemini APIs
 - ChromaDB, LangChain, FAISS
 - All contributing mentors and faculty
-
-```
-
-```
